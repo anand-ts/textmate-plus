@@ -68,6 +68,7 @@ extern NSString* const kUserDefaultsLicenseOwnerKey;
 // ==============
 
 extern NSString* const kUserDefaultsDisableAntiAliasKey;
+extern NSString* const kUserDefaultsDisableCaretBlinkKey;
 extern NSString* const kUserDefaultsLineNumbersKey;
 
 // =========

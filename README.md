@@ -16,6 +16,10 @@ Before you submit a bug report please read the [writing bug reports](https://git
 
 ![textmate](https://raw.github.com/textmate/textmate/gh-pages/images/screenshot.png)
 
+## Editor Preferences
+
+To keep the text cursor steady, open _TextMate → Preferences → Editor_ and uncheck _Blink cursor_. The setting takes effect immediately and is saved between launches. Blinking is enabled by default.
+
 # Building
 
 ## Setup

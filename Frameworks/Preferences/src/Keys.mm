@@ -30,6 +30,7 @@ static NSDictionary* default_settings ()
 		kUserDefaultsRMateServerPortKey:         @"52698",
 		kUserDefaultsLicenseOwnerKey:            NSFullUserName(),
 		kUserDefaultsLineNumbersKey:             @YES,
+		kUserDefaultsDisableCaretBlinkKey:       @NO,
 		kUserDefaultsCrashReportsContactInfoKey: NSFullUserName() ?: @"Anonymous",
 	};
 }
@@ -109,6 +110,7 @@ NSString* const kUserDefaultsLicenseOwnerKey            = @"licenseOwnerName";
 // ==============
 
 NSString* const kUserDefaultsDisableAntiAliasKey        = @"disableAntiAlias";
+NSString* const kUserDefaultsDisableCaretBlinkKey       = @"disableCaretBlink";
 NSString* const kUserDefaultsLineNumbersKey             = @"lineNumbers";
 
 // =========

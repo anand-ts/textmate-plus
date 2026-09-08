@@ -522,6 +522,7 @@ private:
 - (void)redisplayFrom:(size_t)from to:(size_t)to;
 - (NSImage*)imageForRanges:(ng::ranges_t const&)ranges imageRect:(NSRect*)outRect;
 @property (nonatomic, readonly) ng::ranges_t markedRanges;
+@property (nonatomic) BOOL disableCaretBlink;
 @property (nonatomic) NSDate* lastFlagsChangeDate;
 @property (nonatomic) NSUInteger lastFlags;
 @property (nonatomic) OakFlagsState flagsState;
@@ -973,6 +974,7 @@ static std::string shell_quote (std::vector<std::string> paths)
 		_scrollPastEnd  = [NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsScrollPastEndKey];
 		_antiAlias      = ![NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableAntiAliasKey];
 		_fontSmoothing  = (OTVFontSmoothing)[NSUserDefaults.standardUserDefaults integerForKey:kUserDefaultsFontSmoothingKey];
+		_disableCaretBlink = [NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableCaretBlinkKey];
 
 		spellingDotImage = [NSImage imageNamed:@"SpellingDot" inSameBundleAsClass:[self class]];
 		foldingDotsImage = [NSImage imageNamed:@"FoldingDots Template" inSameBundleAsClass:[self class]];
@@ -3151,6 +3153,15 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 // = Caret Blinking =
 // ==================
 
+- (void)setDisableCaretBlink:(BOOL)flag
+{
+	if(_disableCaretBlink == flag)
+		return;
+
+	_disableCaretBlink = flag;
+	[self resetBlinkCaretTimer];
+}
+
 - (NSTimer*)blinkCaretTimer
 {
 	return blinkCaretTimer;
@@ -3164,6 +3175,8 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 
 - (void)resetBlinkCaretTimer
 {
+	self.blinkCaretTimer = nil;
+
 	BOOL hasFocus = (self.keyState & (OakViewViewIsFirstResponderMask|OakViewWindowIsKeyMask|OakViewApplicationIsActiveMask)) == (OakViewViewIsFirstResponderMask|OakViewWindowIsKeyMask|OakViewApplicationIsActiveMask);
 	if(hasFocus && documentView)
 	{
@@ -3171,7 +3184,8 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 		documentView->set_draw_caret(true);
 		hideCaret = NO;
 
-		self.blinkCaretTimer = [NSTimer scheduledTimerWithTimeInterval:[NSEvent caretBlinkInterval] target:self selector:@selector(toggleCaretVisibility:) userInfo:nil repeats:YES];
+		if(!_disableCaretBlink)
+			self.blinkCaretTimer = [NSTimer scheduledTimerWithTimeInterval:[NSEvent caretBlinkInterval] target:self selector:@selector(toggleCaretVisibility:) userInfo:nil repeats:YES];
 	}
 }
 
@@ -3921,6 +3935,7 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 	self.antiAlias     = ![NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableAntiAliasKey];
 	self.fontSmoothing = (OTVFontSmoothing)[NSUserDefaults.standardUserDefaults integerForKey:kUserDefaultsFontSmoothingKey];
 	self.scrollPastEnd = [NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsScrollPastEndKey];
+	self.disableCaretBlink = [NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableCaretBlinkKey];
 	self.themeUUID     = self.effectiveThemeUUID;
 }
 
@@ -4284,7 +4299,7 @@ static scope::context_t add_modifiers_to_scope (scope::context_t scope, NSUInteg
 		hideCaret = !doesHaveFocus;
 	}
 
-	self.blinkCaretTimer = doesHaveFocus ? [NSTimer scheduledTimerWithTimeInterval:[NSEvent caretBlinkInterval] target:self selector:@selector(toggleCaretVisibility:) userInfo:nil repeats:YES] : nil;
+	[self resetBlinkCaretTimer];
 }
 
 // ===========
