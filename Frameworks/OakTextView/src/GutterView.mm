@@ -79,6 +79,9 @@ struct data_source_t
 - (void)userDefaultsDidChange:(id)sender
 {
 	self.antiAlias = ![NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableAntiAliasKey];
+	BOOL showLineNumbers = ![NSUserDefaults.standardUserDefaults boolForKey:kUserDefaultsDisableLineNumbersKey];
+	if(showLineNumbers != [self visibilityForColumnWithIdentifier:GVLineNumbersColumnIdentifier])
+		[self setVisibility:showLineNumbers forColumnWithIdentifier:GVLineNumbersColumnIdentifier];
 }
 
 - (void)updateTrackingAreas

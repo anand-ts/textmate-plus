@@ -19,6 +19,7 @@
 #import <OakAppKit/OakUIConstructionFunctions.h>
 #import <OakAppKit/NSMenuItem Additions.h>
 #import <BundleMenu/BundleMenu.h>
+#import <Preferences/Keys.h>
 
 static NSString* const kUserDefaultsLineNumberScaleFactorKey = @"lineNumberScaleFactor";
 static NSString* const kUserDefaultsLineNumberFontNameKey    = @"lineNumberFontName";
@@ -71,8 +72,6 @@ static NSString* const kFoldingsColumnIdentifier  = @"foldings";
 		gutterView.delegate    = self;
 		[gutterView insertColumnWithIdentifier:kBookmarksColumnIdentifier atPosition:0 dataSource:self delegate:self];
 		[gutterView insertColumnWithIdentifier:kFoldingsColumnIdentifier atPosition:2 dataSource:self delegate:self];
-		if([NSUserDefaults.standardUserDefaults boolForKey:@"DocumentView Disable Line Numbers"])
-			[gutterView setVisibility:NO forColumnWithIdentifier:GVLineNumbersColumnIdentifier];
 		[gutterView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
 		gutterScrollView = [[NSScrollView alloc] initWithFrame:NSZeroRect];
@@ -376,9 +375,7 @@ static NSString* const kFoldingsColumnIdentifier  = @"foldings";
 {
 	BOOL isVisibleFlag = ![gutterView visibilityForColumnWithIdentifier:GVLineNumbersColumnIdentifier];
 	[gutterView setVisibility:isVisibleFlag forColumnWithIdentifier:GVLineNumbersColumnIdentifier];
-	if(isVisibleFlag)
-			[NSUserDefaults.standardUserDefaults removeObjectForKey:@"DocumentView Disable Line Numbers"];
-	else	[NSUserDefaults.standardUserDefaults setObject:@YES forKey:@"DocumentView Disable Line Numbers"];
+	[NSUserDefaults.standardUserDefaults setBool:!isVisibleFlag forKey:kUserDefaultsDisableLineNumbersKey];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem*)aMenuItem

@@ -17,12 +17,15 @@
 - (void)loadView
 {
 	NSButton* blinkCursorCheckBox = OakCreateCheckBox(@"Blink cursor");
+	NSButton* lineNumbersCheckBox = OakCreateCheckBox(@"Show line numbers");
 	NSGridView* gridView = [NSGridView gridViewWithViews:@[
 		@[ OakCreateLabel(@"Cursor:"), blinkCursorCheckBox ],
+		@[ OakCreateLabel(@"Gutter:"), lineNumbersCheckBox ],
 	]];
 
 	self.view = OakSetupGridViewWithSeparators(gridView);
 
 	[blinkCursorCheckBox bind:NSValueBinding toObject:self withKeyPath:@"disableCaretBlink" options:@{ NSValueTransformerNameBindingOption: NSNegateBooleanTransformerName }];
+	[lineNumbersCheckBox bind:NSValueBinding toObject:NSUserDefaultsController.sharedUserDefaultsController withKeyPath:[NSString stringWithFormat:@"values.%@", kUserDefaultsDisableLineNumbersKey] options:@{ NSValueTransformerNameBindingOption: NSNegateBooleanTransformerName }];
 }
 @end

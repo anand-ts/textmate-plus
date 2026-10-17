@@ -20,6 +20,8 @@ Before you submit a bug report please read the [writing bug reports](https://git
 
 To keep the text cursor steady, open _TextMate → Preferences → Editor_ and uncheck _Blink cursor_. The setting takes effect immediately and is saved between launches. Blinking is enabled by default.
 
+_Show line numbers_ in the same pane controls line numbers in the editor gutter. They are enabled by default. You can also toggle them with _View → Show/Hide Line Numbers_ (⌥⌘L). Both controls stay in sync, update all open editors, and save your choice between launches.
+
 # Building
 
 ## Setup

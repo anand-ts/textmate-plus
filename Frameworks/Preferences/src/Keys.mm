@@ -31,6 +31,7 @@ static NSDictionary* default_settings ()
 		kUserDefaultsLicenseOwnerKey:            NSFullUserName(),
 		kUserDefaultsLineNumbersKey:             @YES,
 		kUserDefaultsDisableCaretBlinkKey:       @NO,
+		kUserDefaultsDisableLineNumbersKey:      @NO,
 		kUserDefaultsCrashReportsContactInfoKey: NSFullUserName() ?: @"Anonymous",
 	};
 }
@@ -111,6 +112,7 @@ NSString* const kUserDefaultsLicenseOwnerKey            = @"licenseOwnerName";
 
 NSString* const kUserDefaultsDisableAntiAliasKey        = @"disableAntiAlias";
 NSString* const kUserDefaultsDisableCaretBlinkKey       = @"disableCaretBlink";
+NSString* const kUserDefaultsDisableLineNumbersKey      = @"DocumentView Disable Line Numbers";
 NSString* const kUserDefaultsLineNumbersKey             = @"lineNumbers";
 
 // =========
