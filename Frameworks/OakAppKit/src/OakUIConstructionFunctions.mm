@@ -255,7 +255,8 @@ OakRolloverButton* OakCreateCloseButton (NSString* accessibilityLabel)
 	{
 		NSColor* color = value;
 		[color set];
-		NSRectFill(aRect);
+		// Dirty rectangles can extend beyond the view when clipping is disabled.
+		NSRectFill(NSIntersectionRect(aRect, self.bounds));
 	}
 }
 @end
