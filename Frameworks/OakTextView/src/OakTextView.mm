@@ -2392,9 +2392,14 @@ static void update_menu_key_equivalents (NSMenu* menu, std::multimap<std::string
 
 - (bundles::item_ptr)showMenuForBundleItems:(std::vector<bundles::item_ptr> const&)items
 {
+	NSWindow* win = self.window;
 	NSPoint pos = [self positionForWindowUnderCaret];
-	pos = [self convertPoint:[self.window convertRectFromScreen:(NSRect){ pos, NSZeroSize }].origin fromView:nil];
-	return OakShowMenuForBundleItems(items, self, pos);
+	pos = [self convertPoint:[win convertRectFromScreen:(NSRect){ pos, NSZeroSize }].origin fromView:nil];
+	BOOL didShowMenu = items.size() > 1;
+	bundles::item_ptr item = OakShowMenuForBundleItems(items, self, pos);
+	if(didShowMenu)
+		[win performSelector:@selector(invalidateCursorRectsForView:) withObject:self afterDelay:0];
+	return item;
 }
 
 - (NSMenu*)checkSpellingMenuForRanges:(ng::ranges_t const&)someRanges
@@ -3197,10 +3202,6 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 	AUTO_REFRESH;
 	documentView->set_draw_caret(hideCaret);
 	hideCaret = !hideCaret;
-
-	// The column selection cursor may get stuck if e.g. using ⌥F2 to bring up a menu: We see the initial “option down” but never the “option release” that would normally reset the column selection cursor state.
-	if(([NSEvent modifierFlags] & NSEventModifierFlagOption) == 0)
-		self.showColumnSelectionCursor = NO;
 }
 
 - (void)setShowColumnSelectionCursor:(BOOL)flag
@@ -3914,6 +3915,10 @@ static char const* kOakMenuItemTitle = "OakMenuItemTitle";
 
 - (void)resetCursorRects
 {
+	// Menu tracking (e.g. ⌥F2) can consume the Option key-up event.
+	if(([NSEvent modifierFlags] & NSEventModifierFlagOption) == 0)
+		_showColumnSelectionCursor = NO;
+
 	[self addCursorRect:[self visibleRect] cursor:_showDragCursor ? [NSCursor arrowCursor] : (_showColumnSelectionCursor ? [NSCursor crosshairCursor] : [self ibeamCursor])];
 }
 
