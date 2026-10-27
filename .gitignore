@@ -1,4 +1,5 @@
 build.ninja
+/build/
 local.rave
 Frameworks/license/src/revoked_serials.cc
 .DS_Store

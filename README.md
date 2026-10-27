@@ -22,6 +22,14 @@ To keep the text cursor steady, open _TextMate → Preferences → Editor_ and u
 
 _Show line numbers_ in the same pane controls line numbers in the editor gutter. They are enabled by default. You can also toggle them with _View → Show/Hide Line Numbers_ (⌥⌘L). Both controls stay in sync, update all open editors, and save your choice between launches.
 
+## Editor Themes
+
+Choose an editor color scheme in _View → Theme_. _Theme for Light Appearance_ and _Theme for Dark Appearance_ let you save a separate choice for each appearance; _Auto_ follows the macOS appearance.
+
+_Notepad++ Classic_ is included under _Theme for Light Appearance_. It adapts the [Notepad++ default palette](https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/PowerEditor/src/stylers.model.xml) to TextMate scopes, with a white background, bold blue keywords, green comments, gray strings, orange numbers, and a gray line-number gutter. Python has its own number, multiline string, function, and built-in colors. The theme uses your existing editor font.
+
+The theme ships in `Applications/TextMate/support/Bundles/TextMate Plus Themes.tmbundle` and is copied into the app by the existing build rules. To install it in an older build, open that bundle with TextMate, then select _View → Theme → Theme for Light Appearance → Notepad++ Classic_. Choose _Light_ in the same menu to use it immediately, or _Auto_ to follow macOS.
+
 # Building
 
 ## Setup

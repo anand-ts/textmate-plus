@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>TextMate Plus Themes</string>
+	<key>description</key>
+	<string>Additional editor color themes for TextMate Plus.</string>
+	<key>uuid</key>
+	<string>E0BE83F1-997E-4BB5-87B6-72DE1B071E3A</string>
+</dict>
+</plist>
